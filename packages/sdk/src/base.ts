@@ -281,6 +281,8 @@ export interface SimulationResult {
   footprintSize: number;
 }
 
+export type PreflightResult = SimulationResult;
+
 /** Result of a submitted transaction, including structured failure details. */
 export type TransactionSubmissionResult =
   | {
@@ -511,5 +513,14 @@ export class BaseContractClient {
       expectedResult,
       footprintSize,
     };
+  }
+
+  /** Runs the shared write preflight without opening a wallet prompt. */
+  public async preflightTransaction(
+    method: string,
+    args: xdr.ScVal[],
+    publicKey: string,
+  ): Promise<PreflightResult> {
+    return this.simulateTransaction(method, args, publicKey);
   }
 }
